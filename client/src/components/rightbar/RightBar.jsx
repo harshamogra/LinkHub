@@ -4,7 +4,7 @@ import Online from '../online/Online'
 import UserFriends from '../userfriends/UserFriends'
 
 
-function RightBar({profile}) {
+function RightBar({user}) {
   const HomeRightBar = ()=>{
     return(
       <>
@@ -34,15 +34,15 @@ function RightBar({profile}) {
       <div className='mb-7'>
         <div className='mb-3'>
           <span className='font-semibold mr-4 text-slate-500'>City:</span>
-          <span className='font-light'>New York</span>
+          <span className='font-light'>{user.city}</span>
         </div>
         <div className='mb-3'>
           <span className='font-semibold mr-4 text-slate-500'>From:</span>
-          <span className='font-light'>Madrid</span>
+          <span className='font-light'>{user.from}</span>
         </div>
         <div className='mb-3'>
           <span className='font-semibold mr-4 text-slate-500'>Relationship:</span>
-          <span className='font-light'>Single</span>
+          <span className='font-light'>{user.relationship === 1 ? "Single" : user.relationship === 2 ? "Married" : "Empty" }</span>
         </div>
       </div>
       <h4>User friends</h4>
@@ -57,7 +57,7 @@ function RightBar({profile}) {
   return (
     <div className='flex'>
       <div className=' pt-5 pr-5 '>
-        {profile ? <ProfileRightBar/> : <HomeRightBar/>}
+        {user ? <ProfileRightBar/> : <HomeRightBar/>}
       </div>
     </div>
   )

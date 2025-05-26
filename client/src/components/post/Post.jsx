@@ -1,13 +1,26 @@
 import { MoreVert } from '@mui/icons-material'
-import React, { useState } from 'react'
-import { Users } from '../../dummyData'
+import React, { useState, useEffect } from 'react'
+import {format} from "timeago.js"
+import axios from "axios"
+import { Link } from 'react-router-dom'
 
 function Post({post}) {
-   const[like,setLike] = useState(post.like)
+   const[like,setLike] = useState(post.likes.length)
    const[isliked, setIsLiked]  = useState(false)
+   const [user,setUser] = useState({})
    const PF = import.meta.env.VITE_PUBLIC_FOLDER;
 
-   
+   useEffect(()=>{
+       const fetchUser = async()=>{
+         try{
+         const res = await axios.get(`/api/users?userId=${post.userId}`)
+         setUser(res.data)
+         }catch(err){
+           console.error(err);
+         }
+       }
+       fetchUser();
+     },[post.userId])
 
    const likeHandler = ()=>{
     setLike(isliked ? like-1 : like+1 )
@@ -22,11 +35,13 @@ function Post({post}) {
             {/* post-top */}
             <div className='flex items-center  justify-between'>
                 <div className=' flex items-center '>
-                <img className="w-8 h-8 rounded-full object-cover" src={`${PF}${Users.filter((u) => u.id === post?.userId)[0].profilePicture}`} alt=""/>
-
+                    <Link to={`profile/${user.username}`}>
+                    <img className="w-8 h-8 rounded-full object-cover" src={user.profilePicture ?? PF + "person/noAvatar.png"} alt=""/>
+                    </Link>
+                
                     <div className='ml-3 flex flex-col justify-center'>
-                        <span className='font-semibold block'>{Users.filter(u=>u.id=== post?.userId)[0].username}</span>
-                        <span className='text-xs text-gray-500 '>{post.date}</span>
+                        <span className='font-semibold block'>{user.username}</span>
+                        <span className='text-xs text-gray-500 '>{format(post.createdAt)}</span>
                     </div>
                 </div>
                 <div>
@@ -38,7 +53,7 @@ function Post({post}) {
             {/* post-center */}
         <div className='m-3'> 
             <span>{post?.desc}</span>
-            <img src = {`${PF}${post.photo}`} alt="post" className='mt-5 w-full max-h-full  '/>
+            <img src = {post.img} alt="post" className='mt-5 w-full max-h-full  '/>
         </div>
             {/* post-bottom */}
         <div className='flex items-center justify-between m-3'>

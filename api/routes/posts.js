@@ -90,3 +90,13 @@ router.get("/timeline/:userId", async(req,res)=>{
         res.status(500).json(err)
     }
 })
+
+router.get("/profile/:username", async(req,res)=>{
+    try{
+     const user = await User.findOne({username:req.params.username});
+     const post = await Post.find({userId : user._id});
+     res.status(200).json(post);
+   }catch(err){
+        res.status(500).json(err)
+   }
+})
