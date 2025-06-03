@@ -36,7 +36,7 @@ router.post('/login', async(req,res)=>{
     }
   
       // Continue with login logic (e.g., password check) here...
-      res.status(200).json({message:"User found. Proceeding with login...",user:user})
+      res.status(200).json(user)
     }
     catch(err){
         console.log(err)

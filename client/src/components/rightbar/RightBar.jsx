@@ -5,18 +5,19 @@ import UserFriends from '../userfriends/UserFriends'
 
 
 function RightBar({user}) {
+  const PF = import.meta.env.VITE_PUBLIC_FOLDER;
   const HomeRightBar = ()=>{
     return(
       <>
           <div className='flex items-center'>
-                <img className="w-10 h-10 mr-2" src =" assets/gift.png" alt=""/>
+                <img className="w-10 h-10 mr-2" src ={`${PF}gift.png`} alt=""/>
                 <div>
                 <span className='font-light size-4' >
                   <b className='font-bold'>Dave</b> and <b className='font-bold'>3 other friends</b> have a birthday today
                 </span>
                 </div>
             </div>
-            <img className='w-full rounded-md mt-7 mb-7 ' src='assets/ad.png' alt="ad"/>
+            <img className='w-full rounded-md mt-7 mb-7 ' src={`${PF}ad.png`} alt="ad"/>
             <h4 className='mb-3 mt-9 text-xl font-semibold'>Online Friends</h4>
             <ul className='p-0 m-0'>
                 {Users.map(u=>(

@@ -10,10 +10,10 @@ function Login() {
     const {user, isFetching, error, dispatch} = useContext(AuthContext)
     const handleClick = (e)=>{
         e.preventDefault();
-        loginCall({email: email.current.value,password:password.current.value}, dispatch)
-        console.log(user)
+        loginCall({email: email.current.value,password:password.current.value}, dispatch)  
         
     }
+    // console.log(user)
     const navigate = useNavigate();
 
   return (
@@ -30,7 +30,7 @@ function Login() {
                     <div className="loginbox h-72 p-6 flex flex-col bg-white rounded-md ">
                         <input placeholder='Email' type='email' className='text-xl mb-5 h-12 border border-gray-500 rounded-md p-3' ref={email}/>
                         <input placeholder='Password' type='password' className='text-xl mb-5 h-12 border-1px border border-gray-500 rounded-md p-3' ref={password}/>
-                        <button className='mb-3 p-2 bg-blue-500 rounded-md border-none text-xl text-white cursor-pointer font-semibold tracking-tighter h-14 disabled:cursor-none' disabled={isFetching}>{isFetching ?<CircularProgress color='white' size="25px"/> :"Log In"}</button>
+                        <button className='mb-3 p-2 bg-blue-500 rounded-md border-none text-xl text-white cursor-pointer font-semibold tracking-tighter h-14 disabled:cursor-none' type='submit' disabled={isFetching}>{isFetching ?<CircularProgress color='white' size="25px"/> :"Log In"}</button>
                         <span className='text-gray-600 mb-2 cursor-pointer'>Forgot Password?</span>
                         <button className=' bg-gray-300 h-12 cursor-pointer items-center border w-full border-gray-500 text-black tracking-tighter text-lg rounded-md' onClick={()=>{navigate('/register')}}>Create a New Account</button>   
                     </div>

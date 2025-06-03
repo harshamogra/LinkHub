@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Search } from '@mui/icons-material'
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import PersonIcon from '@mui/icons-material/Person';
@@ -6,9 +6,12 @@ import ChatIcon from '@mui/icons-material/Chat';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import "../../App.css"; // Correct path to App.css from Topbar.jsx
 import { Link } from 'react-router-dom';
-
+import { AuthContext } from '../../context/AuthContext';
 
 function Topbar() {
+  const {user} = useContext(AuthContext)
+  console.log(user?.username);
+  const PF = import.meta.env.VITE_PUBLIC_FOLDER;
   return (
     //topbar container
     <div className =" flex items-center  sticky top-0 h-[50px] w-full bg-blue-500 z-[999] "> 
@@ -51,7 +54,10 @@ function Topbar() {
               {/*notifications*/}<span className="w-4 h-4 bg-red-700 rounded-full text-white absolute flex items-center top-[-5px] right-[-5px] justify-center object-cover cursor-pointer">1</span>
             </div>
         </div>
-        <img src="/assets/person/1.jpeg" alt="profilepicture" className="w-8 h-8 rounded-full object-cover " />
+        <Link to={`/profile/${user.username}`}>
+        <img src={user.profilePicture ? PF+ user.profilePicture : PF+"person/noAvatar.png"} alt="profilepicture" className="w-8 h-8 rounded-full object-cover " />
+
+        </Link>
       </div>
 
     </div>
