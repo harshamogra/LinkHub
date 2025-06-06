@@ -27,7 +27,7 @@ function Feed({username}) {
   return (
   <div className='flex-grow'>
     <div className='p-8'>
-    <Share/>
+    {!username && <Share/>}
       {posts.map((p)=>(
         <Post key={p._id} post={p} />
       ))}

@@ -1,11 +1,26 @@
-import React from 'react'
-import { Users } from '../../dummyData'
+import React, { useEffect, useState } from 'react'
 import Online from '../online/Online'
 import UserFriends from '../userfriends/UserFriends'
-
+import { Users } from '../../dummyData';
+import axios from 'axios';
 
 function RightBar({user}) {
   const PF = import.meta.env.VITE_PUBLIC_FOLDER;
+  const [friends,setFriends] = useState([])
+
+   useEffect(()=>{
+    const getFriends = async()=>{
+      try {
+        const friendList = await axios.get(`/api/users/friends/${user._id}`)
+        console.log(friendList.data)
+        setFriends(friendList.data)
+      } catch (err) {
+        console.error(err)
+      }
+    };
+    getFriends();
+  },[user])
+  
   const HomeRightBar = ()=>{
     return(
       <>
@@ -48,8 +63,8 @@ function RightBar({user}) {
       </div>
       <h4>User friends</h4>
       <div className='flex flex-wrap justify-between'>
-        {Users.map(u=>(
-          <UserFriends key={u.id} user={u}/>
+        {friends.map((friend)=>(
+          <UserFriends key={friend._id} user={friend}/>
         ))}
       </div>
       </>

@@ -36,8 +36,10 @@ function Topbar() {
       <div className="flex items-center justify-around text-white px-8">
         {/* topbarlinks */}
         <div className="px-44 mr-32 size-4 pb-5 pl-16 cursor-pointer ">
+          <Link to= "/">
           <span className="mr-3 px-5 size-4 cursor-pointer">Homepage</span>
           <span className="mr-3 size-4 cursor-pointer">Timeline</span>
+          </Link>
         </div>
         {/* topbaricons */}
         <div className="flex items-center pr-24">
