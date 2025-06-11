@@ -1,26 +1,56 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Online from '../online/Online'
 import UserFriends from '../userfriends/UserFriends'
 import { Users } from '../../dummyData';
 import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
+import AddIcon from '@mui/icons-material/Add';
 
 function RightBar({user}) {
   const PF = import.meta.env.VITE_PUBLIC_FOLDER;
   const [friends,setFriends] = useState([])
+  const {user:currentUser, dispatch}= useContext(AuthContext)
+  const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    if (user && currentUser) {
+      setFollowed(currentUser.following.includes(user._id));
+    }
+  }, [user, currentUser]);
+
 
    useEffect(()=>{
+    if(user){
     const getFriends = async()=>{
       try {
         const friendList = await axios.get(`/api/users/friends/${user._id}`)
-        console.log(friendList.data)
+        // console.log(friendList.data)
         setFriends(friendList.data)
       } catch (err) {
         console.error(err)
       }
     };
     getFriends();
+  }
   },[user])
   
+  const handleClick = async()=>{
+    try {
+        if(followed){
+          await axios.put(`/api/users/${user._id}/unfollow`, {userId: currentUser._id})
+        dispatch({type:"UNFOLLOW", payload:user._id})
+        }
+        else{
+          await axios.put(`/api/users/${user._id}/follow`, {userId: currentUser._id})
+          dispatch({type:"FOLLOW", payload:user._id})
+        }
+        setFollowed(!followed);
+    } catch (err) {
+       console.error(err);
+    }
+    
+  }
+
   const HomeRightBar = ()=>{
     return(
       <>
@@ -46,6 +76,16 @@ function RightBar({user}) {
   const ProfileRightBar = ()=>{
     return(
       <>
+      {user.username!== currentUser.username && (
+            <button onClick={handleClick} className="rightbarFollowButton mt-10 mb-5 border-none bg-blue-500 rounded-md p-2 font-semibold cursor-pointer items-center text-lg text-white tracking-tighter hover:bg-blue-400">
+              {followed ? ("Unfollow"):
+              (
+              <span>
+              Follow <AddIcon className='mb-1'/>
+              </span>
+              )}
+            </button>
+        )}
       <h4 className='text-xl font-semibold mb-2'>User Information</h4>
       <div className='mb-7'>
         <div className='mb-3'>

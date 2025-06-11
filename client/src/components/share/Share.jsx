@@ -3,6 +3,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function Share() {
     const {user} = useContext(AuthContext);
@@ -36,13 +37,19 @@ function Share() {
         }
     }
   return (
-    <div className='flex-grow w-full h-44 rounded-2xl shadow-custom  '>
+    <div className='flex-grow w-full rounded-2xl shadow-custom  '>
         <div className='p-3'>
             <div className='flex items-center'>
                 <img className='w-12 h-12 rounded-full object-cover mr-3' src={user.profilePicture ? PF+user.profilePicture : PF+"person/noAvatar.png"} alt=''/>
                 <input className=' border-none w-72 focus:outline-none' ref={desc} placeholder={"What's in your mind "+user.username+ " ?"} />
             </div>
             <hr className='m-5 '/>
+            {file && (
+                <div className="shareimgcontainer  p-3 relative">
+                    <img className = "shareImg w-full object-cover rounded-md" src={URL.createObjectURL(file)}/>
+                    <CancelIcon className="absolute top-3 right-3 text-white bg-black bg-opacity-50 rounded-full p-1 cursor-pointer hover:bg-opacity-75" onClick = {()=> setFile(null)}/>
+                </div>
+            )}
             <form className='flex items-center justify-between' onSubmit={submitHandler}>
                 <div className='flex ml-5'>
                     <div className=' items-center mr-4 cursor-pointer '>

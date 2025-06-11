@@ -5,12 +5,20 @@ import PersonIcon from '@mui/icons-material/Person';
 import ChatIcon from '@mui/icons-material/Chat';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import "../../App.css"; // Correct path to App.css from Topbar.jsx
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 function Topbar() {
-  const {user} = useContext(AuthContext)
-  console.log(user?.username);
+  const {user, dispatch} = useContext(AuthContext)
+  const navigate = useNavigate();
+
+    const handleClick = ()=>{
+      dispatch({type: "LOGOUT"});
+      localStorage.removeItem("user");
+      navigate('/login')
+    } 
+
+  // console.log(user?.username);
   const PF = import.meta.env.VITE_PUBLIC_FOLDER;
   return (
     //topbar container
@@ -54,6 +62,9 @@ function Topbar() {
             <div className="mr-4 cursor-pointer relative">
               <NotificationsIcon/>
               {/*notifications*/}<span className="w-4 h-4 bg-red-700 rounded-full text-white absolute flex items-center top-[-5px] right-[-5px] justify-center object-cover cursor-pointer">1</span>
+            </div>
+            <div className="mr-4 cursor-pointer relative">
+              <button onClick={handleClick}><LogoutIcon/></button>
             </div>
         </div>
         <Link to={`/profile/${user.username}`}>
